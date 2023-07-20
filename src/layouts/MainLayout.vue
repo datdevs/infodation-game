@@ -19,20 +19,20 @@
     <div class="panel-title">
       <div class="title-3d-list">
         <span class="title-3d-wrap">
-          <span class="title-3d">K</span>
-          <span class="title-3d-shadow">K</span>
+          <span class="title-3d">G</span>
+          <span class="title-3d-shadow">G</span>
         </span>
         <span class="title-3d-wrap">
-          <span class="title-3d">I</span>
-          <span class="title-3d-shadow">I</span>
+          <span class="title-3d">A</span>
+          <span class="title-3d-shadow">A</span>
         </span>
         <span class="title-3d-wrap">
-          <span class="title-3d">N</span>
-          <span class="title-3d-shadow">N</span>
+          <span class="title-3d">M</span>
+          <span class="title-3d-shadow">M</span>
         </span>
         <span class="title-3d-wrap">
-          <span class="title-3d">H</span>
-          <span class="title-3d-shadow">H</span>
+          <span class="title-3d">E</span>
+          <span class="title-3d-shadow">E</span>
         </span>
       </div>
       <div class="panel-title-shadow"></div>
@@ -72,10 +72,11 @@
     }
   }
   .panel-title {
-    background: url('/assets/images/panel.webp') no-repeat;
+    background: url('/assets/images/panel.webp') no-repeat center transparent;
     background-size: contain;
-    padding: 76px 120px 100px;
+    padding: 80px 120px 72px;
     position: relative;
+    margin-bottom: 30px;
 
     &-shadow {
       position: absolute;
@@ -98,6 +99,7 @@
     position: relative;
     display: inline-block;
     line-height: 1;
+    height: 0.83333333em;
     font-family: 'Utendo';
     font-size: 120px;
     text-transform: uppercase;

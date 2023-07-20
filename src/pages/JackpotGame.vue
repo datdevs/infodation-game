@@ -59,6 +59,8 @@
 
   let numberSpinners: NodeListOf<HTMLElement>;
 
+  let isFirstSpin = true;
+
   // Fisher-Yates shuffle algorithm
   for (let i = numbers.value.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -98,7 +100,7 @@
     console.error(error);
   }
 
-  function init(duration = 1, spinnerIndex?: number) {
+  function init(duration = 1, spinnerIndex?: number, isFirst?: boolean) {
     let pool = ['???'];
 
     if (spinnerIndex !== undefined) {
@@ -109,31 +111,10 @@
       pool = [...shuffleArray(numbers.value)].filter((n) => !allExistNumber?.includes(n));
       pool.push('???');
 
-      numbersReel?.addEventListener(
-        'transitionend',
-        function () {
-          const firstNumberReel = numbersReel.querySelector<HTMLElement>('.number-reel:nth-child(1)');
-          const getPrizeIndex = Number(router.currentRoute.value.params.id);
-          let prizeNumber = null;
-
-          prizeNumber = {
-            ...existPrizeNumber,
-          };
-
-          if (!existPrizeNumber?.hasOwnProperty(`prize_${getPrizeIndex}`)) {
-            prizeNumber = Object.assign(prizeNumber, {
-              [`prize_${getPrizeIndex}`]: [],
-            });
-          }
-
-          prizeNumber[`prize_${getPrizeIndex}`][spinnerIndex] = firstNumberReel?.dataset.number;
-
-          storeDataToLocalStorage(PRIZE_NUMBER, prizeNumber);
-
-          isSpinning.value = false;
-        },
-        { once: true }
-      );
+      if (isFirst) {
+        isFirstSpin = false;
+        numbersReel?.addEventListener('transitionend', () => transitionSpinning(numbersReel, spinnerIndex));
+      }
 
       poolNumbers.value[`pool_${spinnerIndex}`] = pool;
 
@@ -155,6 +136,30 @@
     }
   }
 
+  function transitionSpinning(numbersReel: HTMLElement, spinnerIndex: number) {
+    const firstNumberReel = numbersReel.querySelector<HTMLElement>('.number-reel:nth-child(1)');
+    const getPrizeIndex = Number(router.currentRoute.value.params.id);
+    let prizeNumber = null;
+
+    prizeNumber = {
+      ...existPrizeNumber,
+    };
+
+    if (!existPrizeNumber?.hasOwnProperty(`prize_${getPrizeIndex}`)) {
+      prizeNumber = Object.assign(prizeNumber, {
+        [`prize_${getPrizeIndex}`]: [],
+      });
+    }
+
+    prizeNumber[`prize_${getPrizeIndex}`][spinnerIndex] = firstNumberReel?.dataset.number;
+
+    storeDataToLocalStorage(PRIZE_NUMBER, prizeNumber);
+
+    audioBackground.pause(); // Reset background audio
+    isSpinning.value = false; // Enable button
+    numbersReel.style.transitionDuration = '0s'; // Reset duration time
+  }
+
   function startSpin(index: number) {
     executeCheckPrizeNumber();
 
@@ -168,7 +173,11 @@
     audioBackground.play();
     isSpinning.value = true;
 
-    init(15, index);
+    if (isFirstSpin) {
+      init(15, index, true);
+    } else {
+      init(15, index, false);
+    }
 
     const numberSpinner = numberSpinners[index];
     const numbersReel = numberSpinner.querySelector<HTMLElement>('.numbers-reel');
@@ -237,7 +246,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    margin-top: 30px;
+    margin-top: 50px;
     gap: 60px;
   }
   .btn-game {

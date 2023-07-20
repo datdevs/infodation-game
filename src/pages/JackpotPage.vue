@@ -20,7 +20,10 @@
       </div>
     </div>
     <router-view v-slot="{ Component }">
-      <transition name="fade">
+      <transition
+        name="page"
+        mode="out-in"
+      >
         <component :is="Component" />
       </transition>
     </router-view>
@@ -30,9 +33,9 @@
 <script setup lang="ts">
   import { onBeforeMount, ref } from 'vue';
   import { useRouter } from 'vue-router';
+  import { PRIZE_CONFIG } from '../constants';
   import { Prize, PrizeConfig } from '../models/prize-config';
   import { getDataFromLocalStorage } from '../utils';
-  import { PRIZE_CONFIG } from '../constants';
 
   const router = useRouter();
   const prizeList = ref<Prize[]>();
@@ -74,6 +77,7 @@
     justify-content: center;
     gap: 40px;
     align-items: center;
+    margin-top: 60px;
   }
 
   .btn-game {
