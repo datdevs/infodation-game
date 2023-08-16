@@ -16,7 +16,7 @@
       </button>
       <img src="/assets/images/logo.svg" />
     </div>
-    <div class="panel-title">
+    <!-- <div class="panel-title">
       <div class="title-3d-list">
         <span class="title-3d-wrap">
           <span class="title-3d">G</span>
@@ -36,7 +36,7 @@
         </span>
       </div>
       <div class="panel-title-shadow"></div>
-    </div>
+    </div> -->
     <router-view v-slot="{ Component }">
       <transition
         name="page"
@@ -52,10 +52,11 @@
   .game-wrapper {
     height: 100vh;
     padding: 60px;
-    text-align: center;
+    // text-align: center;
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    // flex-direction: column;
+    // align-items: center;
+    // justify-content: center;
     position: relative;
     overflow: auto;
   }
@@ -127,7 +128,7 @@
     width: 50px;
     height: 50px;
     border-radius: 15px;
-    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.6), 0 5px 0 0 #b25f11, 0 8px 0 0 rgba(0, 0, 0, 0.2);
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.6), 0 5px 0 0 #a42b37, 0 8px 0 0 rgba(0, 0, 0, 0.2);
     border-width: 2px;
 
     &:not(:disabled):active {

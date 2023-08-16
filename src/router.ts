@@ -12,6 +12,11 @@ const routes: RouteRecordRaw[] = [
     component: () => import('./pages/JackpotPage.vue'),
     children: [
       {
+        path: '',
+        name: 'Jackpot Menu',
+        component: () => import('./pages/JackpotMenuGame.vue'),
+      },
+      {
         path: 'config',
         name: 'Jackpot Config',
         component: () => import('./pages/ConfigPage.vue'),

@@ -20,7 +20,7 @@
 <style scoped lang="scss">
   .number-reel {
     width: 100%;
-    height: 200px - 16px;
+    height: 400px - 20px;
     display: flex;
     align-items: center;
     justify-content: center;

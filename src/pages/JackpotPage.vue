@@ -1,22 +1,21 @@
 <template>
-  <div>
+  <div class="wrap">
     <div
-      v-if="checkExistConfig()"
-      class="prize-nav"
+      v-if="historyPrizeList"
+      class="history-pinner"
     >
+      <h4>Danh sách trúng giải</h4>
       <div
-        v-for="(p, index) in prizeList"
+        v-for="(h, index) in historyPrizeList"
         :key="index"
       >
-        <router-link
-          class="btn-game"
-          :to="'/jackpot/start/' + index"
+        <span>{{ getPrizeName(h) }}</span>
+        <div
+          v-for="(n, indexN) in reverseHistoryNumber(h)"
+          :key="indexN"
         >
-          <span class="game-text">
-            <span class="game-text-main">{{ p.name }}</span>
-            <span class="game-text-shadow">{{ p.name }}</span>
-          </span>
-        </router-link>
+          <span class="__number">{{ n }}</span>
+        </div>
       </div>
     </div>
     <router-view v-slot="{ Component }">
@@ -31,18 +30,51 @@
 </template>
 
 <script setup lang="ts">
-  import { onBeforeMount, ref } from 'vue';
+  import { onBeforeMount, onMounted, ref, watch } from 'vue';
   import { useRouter } from 'vue-router';
-  import { PRIZE_CONFIG } from '../constants';
+  import { PRIZE_CONFIG, PRIZE_NUMBER } from '../constants';
   import { Prize, PrizeConfig } from '../models/prize-config';
+  import recordNumber from '../services/RecordNumber';
   import { getDataFromLocalStorage } from '../utils';
+
+  const audioBackground = new Audio('/assets/sounds/nhac-xo-so.mp3');
 
   const router = useRouter();
   const prizeList = ref<Prize[]>();
+  const historyPrizeList = ref<string[]>();
+  const historyPrizeNumberList = ref<any>();
+
+  const watchDataChanges = () => {
+    return watch(
+      () => recordNumber.state.data,
+      () => {
+        historyPrize();
+      }
+    );
+  };
 
   onBeforeMount(() => {
+    // audioBackground.play();
+
     checkExistConfig();
+    historyPrize();
   });
+
+  onMounted(() => {
+    watchDataChanges();
+  });
+
+  function historyPrize() {
+    const checkPrizeNumber = JSON.parse(getDataFromLocalStorage(PRIZE_NUMBER) || '{}');
+    const historyPrizeListCheck = Object.keys(checkPrizeNumber);
+
+    if (historyPrizeListCheck.length > 0) {
+      historyPrizeListCheck.sort();
+
+      historyPrizeList.value = historyPrizeListCheck;
+      historyPrizeNumberList.value = checkPrizeNumber;
+    }
+  }
 
   function checkExistConfig(): boolean {
     try {
@@ -68,34 +100,55 @@
       return false;
     }
   }
+
+  function getPrizeName(key: string) {
+    if (!prizeList.value || key === undefined) return '';
+
+    const checkUndefined: string | undefined = key.split('_').pop();
+
+    if (checkUndefined === undefined) return '';
+
+    return prizeList.value[Number(checkUndefined)].name;
+  }
+
+  function reverseHistoryNumber(key: string) {
+    return historyPrizeNumberList.value[key].slice().reverse();
+  }
 </script>
 
 <style scoped lang="scss">
-  .prize-nav {
+  .wrap {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 40px;
     align-items: center;
-    margin-top: 60px;
+    // justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    text-align: center;
   }
 
-  .btn-game {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 30px;
-    width: 200px;
-    height: 200px;
-    padding: 10px;
+  .history-pinner {
+    position: fixed;
+    z-index: 100;
+    top: 30px;
+    right: 30px;
+    text-align: right;
+    text-transform: uppercase;
+    font-family: 'Bungee', cursive;
+    text-shadow: 0 5px 1px rgba(0, 0, 0, 0.2);
 
-    &:not(:disabled):hover {
-      transform: translateY(-10px);
+    h4 {
+      font-size: 20px;
     }
 
-    &:not(:disabled):active {
-      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.6);
-      transform: translateY(0);
+    span {
+      font-size: 22px;
+    }
+
+    .__number {
+      font-size: 36px;
+      line-height: 40px;
+      color: #fffa5c;
     }
   }
 </style>

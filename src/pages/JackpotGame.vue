@@ -1,10 +1,11 @@
 <template>
-  <div>
+  <div style="margin: auto">
     <div class="prize-title">
       <span>{{ prizeName }}</span>
     </div>
     <div class="prize-info">
-      <span>Phần thưởng: {{ prizeInfoName }}</span>
+      <!-- <span>Phần thưởng: {{ prizeInfoName }}</span> -->
+      <span>{{ prizeInfoName }}</span>
     </div>
     <div class="number-list">
       <div
@@ -22,7 +23,7 @@
             />
           </div>
         </div>
-        <div>
+        <div style="display: flex; justify-content: center">
           <button
             class="btn-game"
             :disabled="isSpinning"
@@ -42,9 +43,10 @@
   import NumberReel from '../components/NumberReel.vue';
   import { PRIZE_CONFIG, PRIZE_NUMBER } from '../constants';
   import { PrizeConfig } from '../models/prize-config';
+  import recordNumber from '../services/RecordNumber';
   import { getDataFromLocalStorage, storeDataToLocalStorage } from '../utils';
 
-  const audioBackground = new Audio('/assets/sounds/number-background.mp3');
+  const audioBackground = new Audio('/assets/sounds/spin-the-wheel.mp3');
 
   const prizeName = ref();
   const numberOfPrize = ref();
@@ -58,8 +60,6 @@
   const isSpinning = ref(false);
 
   let numberSpinners: NodeListOf<HTMLElement>;
-
-  let isFirstSpin = true;
 
   // Fisher-Yates shuffle algorithm
   for (let i = numbers.value.length - 1; i > 0; i--) {
@@ -112,7 +112,6 @@
       pool.push('???');
 
       if (isFirst) {
-        isFirstSpin = false;
         numbersReel?.addEventListener('transitionend', () => transitionSpinning(numbersReel, spinnerIndex));
       }
 
@@ -158,6 +157,8 @@
     audioBackground.pause(); // Reset background audio
     isSpinning.value = false; // Enable button
     numbersReel.style.transitionDuration = '0s'; // Reset duration time
+
+    recordNumber.updateData(new Date());
   }
 
   function startSpin(index: number) {
@@ -173,14 +174,15 @@
     audioBackground.play();
     isSpinning.value = true;
 
-    if (isFirstSpin) {
+    const numberSpinner = numberSpinners[index];
+    const numbersReel = numberSpinner.querySelector<HTMLElement>('.numbers-reel');
+
+    if (!numberSpinner.dataset.spinned) {
+      numberSpinner.dataset.spinned = 'true';
       init(15, index, true);
     } else {
       init(15, index, false);
     }
-
-    const numberSpinner = numberSpinners[index];
-    const numbersReel = numberSpinner.querySelector<HTMLElement>('.numbers-reel');
 
     if (numbersReel) {
       setTimeout(() => {
@@ -215,7 +217,10 @@
       return;
     }
 
-    return Object.values(existPrizeNumber).flat();
+    const a: string[] = Object.values(existPrizeNumber).flat() as string[];
+    const b: number[] = a.map((ai) => Number(ai));
+
+    return b;
   }
 
   function shuffleArray([...arr]) {
@@ -232,7 +237,7 @@
   .prize-title,
   .prize-info {
     font-family: 'One Day';
-    font-size: 38px;
+    font-size: 6rem;
     font-weight: bold;
     text-shadow: 0 5px 1px rgba(0, 0, 0, 0.2);
     letter-spacing: 5px;
@@ -246,8 +251,9 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    margin-top: 50px;
+    margin: 60px 0;
     gap: 60px;
+    max-width: calc(400px * 3 + 60px * 3);
   }
   .btn-game {
     margin-top: 30px;
@@ -255,7 +261,7 @@
     width: 60px;
     height: 60px;
     border-radius: 15px;
-    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.6), 0 5px 0 0 #b25f11, 0 8px 0 0 rgba(0, 0, 0, 0.2);
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.6), 0 5px 0 0 #a42b37, 0 8px 0 0 rgba(0, 0, 0, 0.2);
     border-width: 2px;
 
     &:not(:disabled):active {
@@ -289,17 +295,17 @@
 
 <style lang="scss">
   .numbers-spinner {
-    width: 200px;
-    height: 200px;
+    width: 400px;
+    height: 400px;
     font-family: 'Arco';
-    font-size: 82px;
+    font-size: 180px;
     letter-spacing: 5px;
     line-height: 1;
     overflow: hidden;
     position: relative;
     background: rgba(255, 255, 255, 0.5);
-    border-radius: 35px;
-    border: 8px solid #ffc12f;
+    border-radius: 60px;
+    border: 10px solid #ffc12f;
     box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2), 0 0 0 2px #fff, 0 5px 5px rgba(0, 0, 0, 0.2);
   }
   .numbers-reel {

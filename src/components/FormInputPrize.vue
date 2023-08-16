@@ -69,9 +69,9 @@
 <script setup lang="ts">
   import { ref } from 'vue';
   import { useRouter } from 'vue-router';
+  import { PRIZE_CONFIG } from '../constants';
   import { Prize, PrizeConfig } from '../models/prize-config';
   import { storeDataToLocalStorage } from '../utils';
-  import { PRIZE_CONFIG } from '../constants';
 
   const companyName = ref('');
   const prizes = ref<Prize[]>([]);
@@ -80,7 +80,7 @@
   function addMorePrizes() {
     prizes.value.push({
       name: '',
-      numberOfPrize: 0,
+      numberOfPrize: NaN,
       prizeInfo: {
         name: '',
         image: '',
@@ -113,7 +113,7 @@
   .btn-game {
     padding: 10px 30px;
     border-radius: 30px;
-    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.6), 0 8px 0 0 #b25f11, 0 10px 0 0 rgba(0, 0, 0, 0.2);
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.6), 0 8px 0 0 #a42b37, 0 10px 0 0 rgba(0, 0, 0, 0.2);
     border-width: 4px;
 
     &.remove {
