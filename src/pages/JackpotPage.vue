@@ -37,7 +37,7 @@
   import recordNumber from '../services/RecordNumber';
   import { getDataFromLocalStorage } from '../utils';
 
-  const audioBackground = new Audio('/assets/sounds/nhac-xo-so.mp3');
+  // const audioBackground = new Audio('/assets/sounds/nhac-xo-so.mp3');
 
   const router = useRouter();
   const prizeList = ref<Prize[]>();
@@ -54,15 +54,30 @@
   };
 
   onBeforeMount(() => {
-    // audioBackground.play();
-
     checkExistConfig();
     historyPrize();
   });
 
   onMounted(() => {
     watchDataChanges();
+
+    // const promise = audioBackground.play();
+
+    // if (promise !== undefined) {
+    //   promise
+    //     .then((_) => {
+    //       console.log(_);
+    //     })
+    //     .catch((error) => {
+    //       console.log(error);
+    //     });
+    // }
   });
+
+  // function playBackgroundMusic() {
+  //   audioBackground.play();
+  //   audioBackground.loop = true;
+  // }
 
   function historyPrize() {
     const checkPrizeNumber = JSON.parse(getDataFromLocalStorage(PRIZE_NUMBER) || '{}');
