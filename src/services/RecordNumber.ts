@@ -1,10 +1,10 @@
 import { reactive, readonly } from 'vue';
 
 const state = reactive({
-  data: null,
+  data: new Date(),
 });
 
-const updateData = (newValue) => {
+const updateData = (newValue: Date) => {
   state.data = newValue;
 };
 
