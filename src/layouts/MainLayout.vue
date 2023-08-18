@@ -51,7 +51,7 @@
 <style scoped lang="scss">
   .game-wrapper {
     height: 100vh;
-    padding: 60px;
+    // padding: 60px;
     // text-align: center;
     display: flex;
     // flex-direction: column;

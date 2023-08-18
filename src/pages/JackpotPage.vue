@@ -2,7 +2,7 @@
   <div class="wrap">
     <div
       v-if="historyPrizeList"
-      class="history-pinner"
+      class="history-spinner"
     >
       <h4>Danh sách trúng giải</h4>
       <div
@@ -140,9 +140,10 @@
     width: 100%;
     height: 100%;
     text-align: center;
+    padding: 60px 0;
   }
 
-  .history-pinner {
+  .history-spinner {
     position: fixed;
     z-index: 100;
     top: 30px;

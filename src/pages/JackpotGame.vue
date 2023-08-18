@@ -1,7 +1,9 @@
 <template>
   <div style="margin: auto">
-    <div class="prize-title">
-      <span>{{ prizeName }}</span>
+    <div style="display: flex; align-items: center; justify-content: center">
+      <div class="prize-title">
+        <span>{{ prizeName }}</span>
+      </div>
     </div>
     <div class="prize-info">
       <!-- <span>Phần thưởng: {{ prizeInfoName }}</span> -->
@@ -236,16 +238,34 @@
 <style scoped lang="scss">
   .prize-title,
   .prize-info {
-    font-family: 'One Day';
+    font-family: 'Phat Tai';
     font-size: 6rem;
     font-weight: bold;
     text-shadow: 0 5px 1px rgba(0, 0, 0, 0.2);
     letter-spacing: 5px;
-    background: linear-gradient(0, hsla(33, 100%, 53%, 1) 0%, hsla(58, 100%, 68%, 1) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: #f15a24;
+    // background: linear-gradient(0, hsla(33, 100%, 53%, 1) 0%, hsla(58, 100%, 68%, 1) 100%);
+    // -webkit-background-clip: text;
+    // -webkit-text-fill-color: transparent;
+    // color: #f15a24;
+    color: #f74455;
     position: relative;
+
+    -webkit-text-stroke-width: 4px;
+    -webkit-text-stroke-color: #fdffda;
+    text-shadow: 1px 1px 1px #3d3d3d, 1px 2px 1px #3d3d3d, 1px 3px 1px #3d3d3d, 1px 4px 1px #3d3d3d, 1px 5px 1px #3d3d3d,
+      1px 6px 1px #3d3d3d, 1px 7px 1px #3d3d3d, 1px 8px 1px #3d3d3d, 1px 9px 1px #3d3d3d, 1px 10px 1px #3d3d3d,
+      1px 18px 6px rgba(16, 16, 16, 0.4), 1px 22px 10px rgba(16, 16, 16, 0.2), 1px 25px 35px rgba(16, 16, 16, 0.2),
+      1px 30px 60px rgba(16, 16, 16, 0.4);
+  }
+  .prize-title {
+    letter-spacing: 10px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 25px;
+    border: 2px solid #fdffda;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
+    padding: 20px 40px 32px 55px;
+    text-shadow: 1px 1px 1px #3d3d3d, 1px 2px 1px #3d3d3d, 1px 3px 1px #3d3d3d, 1px 4px 1px #3d3d3d, 1px 5px 1px #3d3d3d,
+      1px 6px 1px #3d3d3d, 1px 7px 1px #3d3d3d, 1px 8px 1px #3d3d3d, 1px 9px 1px #3d3d3d, 1px 10px 1px #3d3d3d;
   }
   .number-list {
     display: flex;
@@ -287,9 +307,6 @@
         transition: transform 0.5s ease;
       }
     }
-  }
-  .audio-background-wrap {
-    display: none;
   }
 </style>
 
